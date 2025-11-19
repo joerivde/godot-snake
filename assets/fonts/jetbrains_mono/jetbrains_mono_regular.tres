@@ -1,0 +1,9 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://ds3egsko33il3"]
+
+[ext_resource type="FontFile" uid="uid://bxv6yufacn1c1" path="res://assets/fonts/jetbrains_mono/JetBrainsMono-VariableFont_wght.ttf" id="1_tgg88"]
+
+[resource]
+base_font = ExtResource("1_tgg88")
+variation_opentype = {
+2003265652: 400
+}

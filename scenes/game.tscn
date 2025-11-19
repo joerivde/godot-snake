@@ -1,0 +1,142 @@
+[gd_scene load_steps=12 format=3 uid="uid://dsqm68wyrv1vg"]
+
+[ext_resource type="Script" uid="uid://dk5ayoa3yy82j" path="res://scripts/game_controller.gd" id="1_lbhrr"]
+[ext_resource type="Theme" uid="uid://buuj86k8hr83i" path="res://assets/themes/main_theme.tres" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://cprs33jaajkxa" path="res://scripts/game_field_controller.gd" id="2_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://cdn54jv3oogwh" path="res://scenes/snake_node.tscn" id="2_p57ef"]
+[ext_resource type="PackedScene" uid="uid://clcr6tnvvnmmm" path="res://scenes/eat_piece_node.tscn" id="3_iywne"]
+[ext_resource type="Script" uid="uid://o2mts70uhsm7" path="res://scripts/ui_controller.gd" id="5_p57ef"]
+
+[sub_resource type="Theme" id="Theme_yqjtg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnu2h"]
+bg_color = Color(0.120000005, 0.33, 0.4, 1)
+
+[sub_resource type="Theme" id="Theme_lbhrr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbhrr"]
+bg_color = Color(0.12156863, 0.32941177, 0.4, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
+
+[node name="root_node_2D" type="Node"]
+process_mode = 4
+physics_interpolation_mode = 2
+
+[node name="game_controller" type="Node" parent="." node_paths=PackedStringArray("game_field_controller", "ui_controller")]
+process_mode = 1
+physics_interpolation_mode = 2
+script = ExtResource("1_lbhrr")
+game_field_controller = NodePath("game_field_controller")
+ui_controller = NodePath("ui_controller")
+start_snake_pieces = 3
+init_snake_move_delay_ms = 500
+min_move_delay_ms = 50
+move_delay_ms_decrease = 10
+level_tiles_x = 30
+level_tiles_y = 15
+points_per_eaten_piece = 50
+snake_piece_scene = ExtResource("2_p57ef")
+eat_piece_scene = ExtResource("3_iywne")
+
+[node name="game_field_controller" type="Node" parent="game_controller" node_paths=PackedStringArray("game_field_container", "game_field")]
+process_mode = 4
+script = ExtResource("2_lnu2h")
+game_field_container = NodePath("../../canvas_layer/margin_container/v_box_container/game_field_container")
+game_field = NodePath("../../canvas_layer/margin_container/v_box_container/game_field_container/game_field")
+
+[node name="ui_controller" type="Node" parent="game_controller" node_paths=PackedStringArray("points_label", "time_label")]
+process_mode = 4
+physics_interpolation_mode = 2
+script = ExtResource("5_p57ef")
+points_label = NodePath("../../canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container/label_points_value")
+time_label = NodePath("../../canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container/label_time_value")
+
+[node name="canvas_layer" type="CanvasLayer" parent="."]
+process_mode = 4
+physics_interpolation_mode = 2
+follow_viewport_enabled = true
+
+[node name="margin_container" type="MarginContainer" parent="canvas_layer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_yqjtg")
+
+[node name="v_box_container" type="VBoxContainer" parent="canvas_layer/margin_container"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="top_panel" type="PanelContainer" parent="canvas_layer/margin_container/v_box_container"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lnu2h")
+
+[node name="margin_container" type="MarginContainer" parent="canvas_layer/margin_container/v_box_container/top_panel"]
+layout_mode = 2
+theme = SubResource("Theme_lbhrr")
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="h_box_container" type="HBoxContainer" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="label_time" type="Label" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+layout_mode = 2
+theme = ExtResource("1_uwrxv")
+theme_type_variation = &"BoldLabel"
+text = "Time"
+
+[node name="time_spacer" type="Control" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="label_time_value" type="Label" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+layout_mode = 2
+theme = ExtResource("1_uwrxv")
+text = "00:00"
+
+[node name="spacer" type="Control" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="label_points" type="Label" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+layout_mode = 2
+theme = ExtResource("1_uwrxv")
+theme_type_variation = &"BoldLabel"
+text = "Points"
+
+[node name="points_spacer" type="Control" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="label_points_value" type="Label" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+layout_mode = 2
+theme = ExtResource("1_uwrxv")
+text = "000"
+
+[node name="game_field_container" type="Panel" parent="canvas_layer/margin_container/v_box_container"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_lbhrr")
+
+[node name="game_field" type="Panel" parent="canvas_layer/margin_container/v_box_container/game_field_container"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -425.0
+offset_top = -333.5
+offset_right = 411.0
+offset_bottom = 324.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_iywne")
