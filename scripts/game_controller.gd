@@ -33,6 +33,7 @@ func _enter_tree() -> void:
 	self.snake_controller.eat_piece_scene = self.eat_piece_scene
 	self.snake_controller.move_delay_ms = self.init_snake_move_delay_ms
 	self.snake_controller.normal_piece_eaten.connect(on_normal_piece_eaten)
+	self.snake_controller.snake_hit_something.connect(on_snake_hit_something)
 
 func _ready() -> void:
 	snake_controller.game_field = game_field_controller.game_field
@@ -78,12 +79,8 @@ func _process(delta: float) -> void:
 		self.elapsed_seconds += 1
 		self.elapsed_ms -= 1000
 		var seconds: int = self.elapsed_seconds % 60
-		var minutes: int = floori(self.elapsed_seconds / 60.0)
+		var minutes: int = TimeUtils.seconds_to_minutes_floored(self.elapsed_seconds)
 		self.ui_controller.update_elapsed_time(minutes, seconds)
-
-
-
-	# TODO: Update time!
 
 func _input(event: InputEvent) -> void:
 	var move_dir: Vector2i = Vector2.ZERO
@@ -109,3 +106,7 @@ func on_normal_piece_eaten() -> void:
 		self.snake_controller.move_delay_ms = new_move_delay_ms
 
 	# self.ui_controller.set_points(self.points)
+
+func on_snake_hit_something() -> void:
+	print_debug("GAME OVER")
+	get_tree().paused = true

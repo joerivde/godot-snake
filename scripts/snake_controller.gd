@@ -16,6 +16,7 @@ var remaining_move_delay: int
 var paused: bool = true
 
 signal normal_piece_eaten()
+signal snake_hit_something()
 
 func init_snake(
 	initial_move_dir: Vector2i,
@@ -98,9 +99,22 @@ func process(delta: float) -> void:
 	# print_debug("remaining_move_delay: %d" % [self.remaining_move_delay])
 
 	# Handle the head
+	var nodes_len: int = self.nodes.size()
 	var node: SnakeNode = self.nodes[0]
 	var new_node_tile_pos: Vector2i = node.tile_pos + move_dir
 	# TODO: check if snake hit something and potentially exit early
+	# Check if snake is out of game field bounds
+	if new_node_tile_pos.x < 0 || new_node_tile_pos.x > self.game_field_data.tiles.x - 1 || new_node_tile_pos.y < 0 || new_node_tile_pos.y > self.game_field_data.tiles.y - 1:
+		emit_signal("snake_hit_something")
+		return
+	# Check if snake hit itself
+	# -1, we don't check the last node, because that
+	# node will become free once everything moves
+	for i in range(1, nodes_len - 1):
+		var node_tile_pos: Vector2i = nodes[i].tile_pos
+		if node_tile_pos == new_node_tile_pos:
+			emit_signal("snake_hit_something")
+			return
 
 	# Check if snake head is now at position of thing to eat
 	var next_node_should_be_filled = false
@@ -119,7 +133,6 @@ func process(delta: float) -> void:
 
 		emit_signal("normal_piece_eaten")
 
-		# TODO: Emit event to increase score?
 		# TODO: Potentially spawn extra item -> probably separate method
 	elif node.is_filled == true:
 		node.is_filled = false
@@ -136,7 +149,6 @@ func process(delta: float) -> void:
 	node.previous_tile_pos = previous_tile_pos
 
 	# var filled_nodes_len: int = self.fill_nodes.size()
-	var nodes_len: int = self.nodes.size()
 	for i in range(1, nodes_len):
 		node = self.nodes[i]
 		new_node_tile_pos = previous_tile_pos
@@ -156,10 +168,6 @@ func process(delta: float) -> void:
 			node.is_filled = false
 			self.set_snake_node_filled(node, false)
 			next_node_should_be_filled = true
-
-	# TODO: Check if we're at the end, if so -> add new snake piece
-	# Do this by checking it next_node_should_be_filled is still true
-	# then look up the last node's previous_tile_pos -> spawn there
 
 	# Spawn a new node at the last position of the previous node
 	if next_node_should_be_filled == true:
