@@ -13,7 +13,6 @@ var move_dir: Vector2i
 var game_field_data: GameFieldData
 var move_delay_ms: int
 var remaining_move_delay: int
-var paused: bool = true
 
 signal normal_piece_eaten()
 signal snake_hit_something()
@@ -80,13 +79,7 @@ func instantiate_new_eat_piece_control_at(
 	)
 	return eat_piece
 
-func set_pause(pause: bool) -> void:
-	self.paused = pause
-
 func process(delta: float) -> void:
-	if self.paused == true:
-		return
-
 	# Convert seconds to ms
 	var delta_ms: int = ceili(delta * 1000)
 	if self.remaining_move_delay > 0:
@@ -104,7 +97,10 @@ func process(delta: float) -> void:
 	var new_node_tile_pos: Vector2i = node.tile_pos + move_dir
 	# TODO: check if snake hit something and potentially exit early
 	# Check if snake is out of game field bounds
-	if new_node_tile_pos.x < 0 || new_node_tile_pos.x > self.game_field_data.tiles.x - 1 || new_node_tile_pos.y < 0 || new_node_tile_pos.y > self.game_field_data.tiles.y - 1:
+	if (new_node_tile_pos.x < 0 ||
+		new_node_tile_pos.x > self.game_field_data.tiles.x - 1 ||
+		new_node_tile_pos.y < 0 ||
+		new_node_tile_pos.y > self.game_field_data.tiles.y - 1):
 		emit_signal("snake_hit_something")
 		return
 	# Check if snake hit itself
@@ -179,13 +175,6 @@ func process(delta: float) -> void:
 		)
 		self.nodes.push_back(snake_node)
 
-# func get_is_filled_node(tile_pos: Vector2i, filled_nodes_len: int) -> bool:
-# 	for i in filled_nodes_len:
-# 		if self.fill_nodes[i] == tile_pos:
-# 			return true
-#
-# 	return false
-
 func set_snake_node_filled(
 	node: SnakeNode,
 	filled: bool,
@@ -225,14 +214,18 @@ func check_if_allowed_direction(dir: Vector2i) -> bool:
 	# print_debug("head_tile: %s | previous_tile: %s | pos_after_dir: %s" % [head_node_tile.tile_pos, head_node_tile.previous_tile_pos, pos_after_dir])
 	return pos_after_dir != head_node_tile.previous_tile_pos
 
+func reset() -> void:
+	self.move_delay_ms = 0
 
-# func reset() -> void:
-# 	start_tile = Vector2i.ZERO
-# 	nodes.clear()
+	# Remove all snake nodes
+	var nodes_len: int = self.nodes.size()
+	for i in nodes_len:
+		var node: SnakeNode = self.nodes[i]
+		node.root_ctrl.queue_free()
 
-# func add_node_at_end(ctrl: Control) -> void:
-# 	var nodes_size: int = nodes.size()
-# 	if nodes_size == 0:
-# 		return
-#
-# 	var last_node: SnakeNode = nodes[nodes_size - 1]
+	self.nodes.clear()
+
+	# Remove eat piece
+	if self.current_eat_piece.root_ctrl != null:
+		self.current_eat_piece.root_ctrl.queue_free()
+		self.current_eat_piece.root_ctrl = null

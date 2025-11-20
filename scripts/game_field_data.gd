@@ -3,7 +3,7 @@ class_name GameFieldData
 """
 Amount of tiles in x and y that the field is composed of
 """
-var tiles: Vector2
+var tiles: Vector2i
 """
 Size in px of 1 tile
 """

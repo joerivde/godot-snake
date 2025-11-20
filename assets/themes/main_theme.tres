@@ -1,16 +1,28 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://buuj86k8hr83i"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://buuj86k8hr83i"]
 
 [ext_resource type="FontFile" uid="uid://fiwl466ru4xt" path="res://assets/fonts/jetbrains_mono/static/JetBrainsMono-Regular.ttf" id="1_3f3va"]
 [ext_resource type="FontVariation" uid="uid://xr2vsoc7yqj0" path="res://assets/fonts/jetbrains_mono/jetbrains_mono_bold.tres" id="1_vhku8"]
 [ext_resource type="FontVariation" uid="uid://ds3egsko33il3" path="res://assets/fonts/jetbrains_mono/jetbrains_mono_regular.tres" id="2_gvtt4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vhku8"]
+bg_color = Color(0, 0.5686275, 0.21960784, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [resource]
 default_font = ExtResource("1_3f3va")
 default_font_size = 24
 BoldLabel/base_type = &"Label"
 BoldLabel/fonts/font = ExtResource("1_vhku8")
+Button/styles/normal = SubResource("StyleBoxFlat_vhku8")
 Control/fonts/font = ExtResource("2_gvtt4")
+Header1/base_type = &"Label"
+Header1/font_sizes/font_size = 72
+Header1/fonts/font = ExtResource("1_vhku8")
 MarginContainer/constants/margin_bottom = 16
 MarginContainer/constants/margin_left = 16
 MarginContainer/constants/margin_right = 16
 MarginContainer/constants/margin_top = 16
+VBoxContainer/constants/separation = 16

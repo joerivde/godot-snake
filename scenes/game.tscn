@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dsqm68wyrv1vg"]
+[gd_scene load_steps=16 format=3 uid="uid://dsqm68wyrv1vg"]
 
 [ext_resource type="Script" uid="uid://dk5ayoa3yy82j" path="res://scripts/game_controller.gd" id="1_lbhrr"]
 [ext_resource type="Theme" uid="uid://buuj86k8hr83i" path="res://assets/themes/main_theme.tres" id="1_uwrxv"]
@@ -18,6 +18,18 @@ bg_color = Color(0.120000005, 0.33, 0.4, 1)
 bg_color = Color(0.12156863, 0.32941177, 0.4, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p57ef"]
+expand_margin_left = 32.0
+expand_margin_top = 32.0
+expand_margin_right = 32.0
+expand_margin_bottom = 32.0
+
+[sub_resource type="Theme" id="Theme_p57ef"]
+
+[sub_resource type="Theme" id="Theme_u5sy4"]
+
+[sub_resource type="Theme" id="Theme_gee14"]
 
 [node name="root_node_2D" type="Node"]
 process_mode = 4
@@ -42,22 +54,31 @@ eat_piece_scene = ExtResource("3_iywne")
 [node name="game_field_controller" type="Node" parent="game_controller" node_paths=PackedStringArray("game_field_container", "game_field")]
 process_mode = 4
 script = ExtResource("2_lnu2h")
-game_field_container = NodePath("../../canvas_layer/margin_container/v_box_container/game_field_container")
-game_field = NodePath("../../canvas_layer/margin_container/v_box_container/game_field_container/game_field")
+game_field_container = NodePath("../../canvas_layer/root_game_margin_container/v_box_container/game_field_container")
+game_field = NodePath("../../canvas_layer/root_game_margin_container/v_box_container/game_field_container/game_field")
 
-[node name="ui_controller" type="Node" parent="game_controller" node_paths=PackedStringArray("points_label", "time_label")]
+[node name="ui_controller" type="Node" parent="game_controller" node_paths=PackedStringArray("game_points_value_label", "game_time_value_label", "game_over_menu_time_value_label", "game_over_menu_point_value_label", "root_menu_container", "main_menu_container", "game_over_menu_container", "btn_start_game", "btn_quit", "btn_try_again", "btn_goto_main_menu")]
 process_mode = 4
 physics_interpolation_mode = 2
 script = ExtResource("5_p57ef")
-points_label = NodePath("../../canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container/label_points_value")
-time_label = NodePath("../../canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container/label_time_value")
+game_points_value_label = NodePath("../../canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container/label_points_value")
+game_time_value_label = NodePath("../../canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container/label_time_value")
+game_over_menu_time_value_label = NodePath("../../canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container/time_hb_container/lbl_time_val")
+game_over_menu_point_value_label = NodePath("../../canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container/points_hb_container2/lbl_points_val")
+root_menu_container = NodePath("../../canvas_layer/root_menu_container")
+main_menu_container = NodePath("../../canvas_layer/root_menu_container/main_menu_panel_container")
+game_over_menu_container = NodePath("../../canvas_layer/root_menu_container/game_over_menu_panel_container")
+btn_start_game = NodePath("../../canvas_layer/root_menu_container/main_menu_panel_container/main_menu_vbox/btn_start")
+btn_quit = NodePath("../../canvas_layer/root_menu_container/main_menu_panel_container/main_menu_vbox/btn_quit")
+btn_try_again = NodePath("../../canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/btn_try_again")
+btn_goto_main_menu = NodePath("../../canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/btn_goto_main_menu")
 
 [node name="canvas_layer" type="CanvasLayer" parent="."]
 process_mode = 4
 physics_interpolation_mode = 2
 follow_viewport_enabled = true
 
-[node name="margin_container" type="MarginContainer" parent="canvas_layer"]
+[node name="root_game_margin_container" type="MarginContainer" parent="canvas_layer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -67,15 +88,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = SubResource("Theme_yqjtg")
 
-[node name="v_box_container" type="VBoxContainer" parent="canvas_layer/margin_container"]
+[node name="v_box_container" type="VBoxContainer" parent="canvas_layer/root_game_margin_container"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="top_panel" type="PanelContainer" parent="canvas_layer/margin_container/v_box_container"]
+[node name="top_panel" type="PanelContainer" parent="canvas_layer/root_game_margin_container/v_box_container"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_lnu2h")
 
-[node name="margin_container" type="MarginContainer" parent="canvas_layer/margin_container/v_box_container/top_panel"]
+[node name="margin_container" type="MarginContainer" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel"]
 layout_mode = 2
 theme = SubResource("Theme_lbhrr")
 theme_override_constants/margin_left = 16
@@ -83,50 +104,50 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="h_box_container" type="HBoxContainer" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container"]
+[node name="h_box_container" type="HBoxContainer" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container"]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="label_time" type="Label" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+[node name="label_time" type="Label" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container"]
 layout_mode = 2
 theme = ExtResource("1_uwrxv")
 theme_type_variation = &"BoldLabel"
 text = "Time"
 
-[node name="time_spacer" type="Control" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+[node name="time_spacer" type="Control" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="label_time_value" type="Label" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+[node name="label_time_value" type="Label" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container"]
 layout_mode = 2
 theme = ExtResource("1_uwrxv")
 text = "00:00"
 
-[node name="spacer" type="Control" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+[node name="spacer" type="Control" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="label_points" type="Label" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+[node name="label_points" type="Label" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container"]
 layout_mode = 2
 theme = ExtResource("1_uwrxv")
 theme_type_variation = &"BoldLabel"
 text = "Points"
 
-[node name="points_spacer" type="Control" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+[node name="points_spacer" type="Control" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="label_points_value" type="Label" parent="canvas_layer/margin_container/v_box_container/top_panel/margin_container/h_box_container"]
+[node name="label_points_value" type="Label" parent="canvas_layer/root_game_margin_container/v_box_container/top_panel/margin_container/h_box_container"]
 layout_mode = 2
 theme = ExtResource("1_uwrxv")
 text = "000"
 
-[node name="game_field_container" type="Panel" parent="canvas_layer/margin_container/v_box_container"]
+[node name="game_field_container" type="Panel" parent="canvas_layer/root_game_margin_container/v_box_container"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_lbhrr")
 
-[node name="game_field" type="Panel" parent="canvas_layer/margin_container/v_box_container/game_field_container"]
+[node name="game_field" type="Panel" parent="canvas_layer/root_game_margin_container/v_box_container/game_field_container"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -140,3 +161,113 @@ offset_bottom = 324.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_iywne")
+
+[node name="root_menu_container" type="CenterContainer" parent="canvas_layer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="main_menu_panel_container" type="PanelContainer" parent="canvas_layer/root_menu_container"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p57ef")
+
+[node name="main_menu_vbox" type="VBoxContainer" parent="canvas_layer/root_menu_container/main_menu_panel_container"]
+layout_mode = 2
+theme = SubResource("Theme_p57ef")
+
+[node name="title" type="Label" parent="canvas_layer/root_menu_container/main_menu_panel_container/main_menu_vbox"]
+layout_mode = 2
+theme = ExtResource("1_uwrxv")
+theme_type_variation = &"Header1"
+text = "SNAKE"
+horizontal_alignment = 1
+
+[node name="btn_start" type="Button" parent="canvas_layer/root_menu_container/main_menu_panel_container/main_menu_vbox"]
+process_mode = 3
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "START"
+
+[node name="btn_quit" type="Button" parent="canvas_layer/root_menu_container/main_menu_panel_container/main_menu_vbox"]
+process_mode = 3
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "QUIT"
+
+[node name="game_over_menu_panel_container" type="PanelContainer" parent="canvas_layer/root_menu_container"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p57ef")
+
+[node name="game_over_menu_vbox" type="VBoxContainer" parent="canvas_layer/root_menu_container/game_over_menu_panel_container"]
+layout_mode = 2
+theme = SubResource("Theme_p57ef")
+
+[node name="title" type="Label" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox"]
+layout_mode = 2
+theme = ExtResource("1_uwrxv")
+theme_type_variation = &"Header1"
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="stats_hb_container" type="HBoxContainer" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox"]
+layout_mode = 2
+
+[node name="time_hb_container" type="HBoxContainer" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container"]
+layout_mode = 2
+theme = SubResource("Theme_u5sy4")
+theme_override_constants/separation = 8
+
+[node name="lbl_time" type="Label" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container/time_hb_container"]
+layout_mode = 2
+theme = SubResource("Theme_gee14")
+theme_type_variation = &"BoldLabel"
+text = "Time:"
+
+[node name="lbl_time_val" type="Label" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container/time_hb_container"]
+layout_mode = 2
+theme = SubResource("Theme_gee14")
+text = "00:00"
+
+[node name="spacer" type="Control" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="points_hb_container2" type="HBoxContainer" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container"]
+layout_mode = 2
+theme = SubResource("Theme_u5sy4")
+theme_override_constants/separation = 8
+
+[node name="lbl_points" type="Label" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container/points_hb_container2"]
+layout_mode = 2
+theme = SubResource("Theme_gee14")
+theme_type_variation = &"BoldLabel"
+text = "Points"
+
+[node name="lbl_points_val" type="Label" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox/stats_hb_container/points_hb_container2"]
+layout_mode = 2
+theme = SubResource("Theme_gee14")
+text = "000"
+
+[node name="spacer" type="Control" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox"]
+layout_mode = 2
+
+[node name="btn_try_again" type="Button" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox"]
+process_mode = 3
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "TRY AGAIN"
+
+[node name="btn_goto_main_menu" type="Button" parent="canvas_layer/root_menu_container/game_over_menu_panel_container/game_over_menu_vbox"]
+process_mode = 3
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "MAIN MENU"
